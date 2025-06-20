@@ -31,8 +31,7 @@ def create_meeting_task_database():
                     ]
                 }
             },
-            "Due": { "date": {} },
-            "GitHub Link": { "url": {} }
+            "Due": { "date": {} }
         }
     }
 
@@ -74,9 +73,6 @@ def add_task_to_database(database_id, task):
             },
             "Due": {
                 "date": { "start": task["due"] }
-            },
-            "GitHub Link": {
-                "url": task["github_link"]
             }
         }
     }
@@ -92,13 +88,9 @@ if __name__ == "__main__":
     db_id = create_meeting_task_database()
 
     if db_id:
-        
-        with open("meeting_summary_input.json", "r") as f:
+        with open("../whisper_api/meeting_summary_input.json", "r") as f:
             data = json.load(f)
-
-        github_link = data["github_link"]
 
         for task in data["tasks"]:
             task["status"] = "To Do"
-            task["github_link"] = github_link
             add_task_to_database(db_id, task)
