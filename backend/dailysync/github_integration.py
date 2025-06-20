@@ -4,12 +4,14 @@ import time
 import json
 from dotenv import load_dotenv
 
-load_dotenv()
+# Explicitly load the .env file from the project root
+ROOT_ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.env'))
+load_dotenv(ROOT_ENV_PATH)
 
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 TOKEN_GITHUB = os.getenv("TOKEN_GITHUB")
 REPO_OWNER = os.getenv("REPO_OWNER")
-REPO_NAME = os.getenv("REPO_NAME").split("/")[-1]
+REPO_NAME = os.getenv("REPO_NAME")
 DATABASE_ID = os.getenv("DATABASE_ID")
 
 headers_notion = {

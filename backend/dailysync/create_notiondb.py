@@ -8,6 +8,27 @@ load_dotenv()
 NOTION_TOKEN = os.getenv("NOTION_TOKEN")
 PARENT_PAGE_ID = os.getenv("PARENT_PAGE_ID")
 
+# Path to the global .env file (project root)
+ROOT_ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../.env'))
+
+def update_global_env_database_id(db_id):
+    """Update or add DATABASE_ID in the global .env file at the project root."""
+    lines = []
+    found = False
+    if os.path.exists(ROOT_ENV_PATH):
+        with open(ROOT_ENV_PATH, 'r') as f:
+            lines = f.readlines()
+        for i, line in enumerate(lines):
+            if line.startswith('DATABASE_ID='):
+                lines[i] = f'DATABASE_ID={db_id}\n'
+                found = True
+                break
+    if not found:
+        lines.append(f'DATABASE_ID={db_id}\n')
+    with open(ROOT_ENV_PATH, 'w') as f:
+        f.writelines(lines)
+    print(f"✅ DATABASE_ID written to {ROOT_ENV_PATH}")
+
 def create_meeting_task_database():
     url = "https://api.notion.com/v1/databases"
     headers = {
@@ -42,10 +63,7 @@ def create_meeting_task_database():
         db_id = data["id"]
         print("✅ Database created successfully!")
         print("📁 Database ID:", db_id)
-
-        with open(".env", "a") as env_file:
-            env_file.write(f"\nDATABASE_ID={db_id}")
-
+        update_global_env_database_id(db_id)
         return db_id
     else:
         print("❌ Failed to create database:", data)
