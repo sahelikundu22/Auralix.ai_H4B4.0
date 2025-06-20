@@ -1,0 +1,12 @@
+flask==2.0.1
+werkzeug==2.0.3
+python-dotenv==1.0.0
+requests==2.31.0
+pyngrok
+google-generativeai==0.3.2
+git+https://github.com/openai/whisper.git
+slack-sdk==3.26.1
+pydub==0.25.1
+SpeechRecognition==3.10.0
+torch==2.5.1
+torchaudio==2.5.1

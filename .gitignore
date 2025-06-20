@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.venv/
+
+# IDE/Editor specific
+.idea/
+.vscode/
+*.swp
+
+# Dependencies
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+
+# Secrets
+.env
+*.env
+
+# Temporary files
+backend/whisper_api/temp_audio.wav
+backend/whisper_api/meeting_summary_input.json 

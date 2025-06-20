@@ -1,0 +1,34 @@
+{
+  "github_link": "https://github.com/sahelikundu22/meeting",
+  "tasks": [
+    {
+      "task": "Create Notion DB and link with app",
+      "assignee": "Saheli",
+      "status": "To Do",
+      "due": "2025-06-15"
+    },
+    {
+      "task": "Integrate Whisper model for transcription",
+      "assignee": "Shreya",
+      "status": "To Do",
+      "due": "2025-06-15"
+    },{
+      "task": "slack summary",
+      "assignee": "Shreya",
+      "status": "To Do",
+      "due": "2025-06-17"
+    },
+    {
+      "task": "Build frontend login screen",
+      "assignee": "Anshley",
+      "status": "To Do",
+      "due": "2025-06-15"
+    },
+    {
+      "task": "Set up Slack bot for task updates",
+      "assignee": "Debnanda",
+      "status": "To Do",
+      "due": "2025-06-15"
+    }
+  ]
+}
