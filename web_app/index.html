@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auralix - Meeting Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .record-btn {
+            flex: 1;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .record-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .record-btn.recording {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .upload-btn {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #495057;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .toggles {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .backend-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .backend-section h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 16px;
+        }
+
+        .backend-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .backend-btn {
+            padding: 12px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .backend-btn:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+            transform: translateY(-1px);
+        }
+
+        .summary-section {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .summary-section.show {
+            display: block;
+        }
+
+        .summary-section h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .post-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .post-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        .server-status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .server-status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .server-status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">A</div>
+            <h1>Auralix</h1>
+            <p class="subtitle">Meeting Management System</p>
+        </div>
+
+        <div id="serverStatus" class="server-status disconnected">
+            🔴 Backend server disconnected
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="meetingTitle" placeholder="Enter meeting title..." />
+        </div>
+
+        <div class="actions">
+            <button id="recordBtn" class="record-btn">
+                <span class="dot">●</span>
+                <span class="label">Start Recording</span>
+            </button>
+            <label for="uploadFile" class="upload-btn">
+                📁 Upload Audio
+            </label>
+            <input id="uploadFile" type="file" accept="audio/*" style="display: none;" />
+        </div>
+
+        <div id="status" class="status">Ready to record</div>
+
+        <div class="toggles">
+            <div class="toggle-item">
+                <input type="checkbox" id="slackEnabled" />
+                <label for="slackEnabled">Share to Slack</label>
+            </div>
+            <div class="toggle-item">
+                <input type="checkbox" id="notionEnabled" />
+                <label for="notionEnabled">Send action items to Notion</label>
+            </div>
+        </div>
+
+        <div class="backend-section">
+            <h3>Backend Management</h3>
+            <div class="backend-buttons">
+                <button id="checkCommits" class="backend-btn">
+                    🔍 Check GitHub Commits
+                </button>
+                <button id="sendStandup" class="backend-btn">
+                    📤 Send Standup
+                </button>
+                <button id="initDb" class="backend-btn">
+                    🗄️ Initialize Database
+                </button>
+            </div>
+        </div>
+
+        <div id="summarySection" class="summary-section">
+            <h2>AI Summary</h2>
+            <textarea id="summaryEdit" placeholder="Edit summary before posting..."></textarea>
+            <button id="postToSlack" class="post-btn">Post to Slack</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
