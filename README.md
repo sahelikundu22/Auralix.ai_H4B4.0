@@ -1,336 +1,150 @@
 # Auralix.ai
 
 **Where Meetings Turn into Momentum**
+
+Auralix.ai is an AI-powered async agent that captures meetings, transcribes them in real-time, summarizes team discussions, and auto-syncs tasks to Notion, Slack, and GitHub. It also pulls team activity from GitHub and Notion, summarizes each member’s progress using Gemini, and sends clean Slack updates, automates everything — giving async visibility without the overhead of manual standups.
+
 ---
 
-Auralix.ai is an AI-powered automation platform that captures meetings, transcribes them in real-time, and turns every discussion into structured summaries and synced tasks — directly linked to Notion, Slack, and GitHub. From voice to visibility, it automates progress tracking without manual effort.
+## 🚀 Features
 
----
-
-## 🚀 Key Features
-
-### 🎙️ Chrome Extension — Meeting Recorder & Summary Hub
-
-* Record meetings directly from the browser
-* Upload audio files for processing
-* Get instant summaries powered by Whisper + Gemini
-* Display summaries in an interactive popup UI
-* One-click push to:
-  * ✅ Slack (structured message)
-  * ✅ Notion (task board with auto-assignees)
-
-### 🧠 FastAPI Backend — AI Summarization Engine
-
-* Audio → Text via OpenAI Whisper
-* Text → Summary via Gemini with custom prompt templates
-
-  1. Key summary
-  2. Main discussion topics
-  3. Action items
-  4. Important details
-* Slack bot integration (formatted daily summary)
-* Notion SDK: Syncs tasks with metadata (assignees, status, deadlines)
-
-
-### 🤖 Auto Progress Aggregator
-
-* Fetch pull requests & commits via GitHub API
-* Fetch Notion task updates by user
-* Match activity to Slack users
-* Generate clear,team-wise daily task progress report
-* Post to Slack in clear format:
-
-  ```
-  👤 Shreya
-  ✅ What I did: Fixed UI/UX 
-  🚧 In progress: Building frontend
-  ⚠️ Blockers: None
-  ```
+- **🎙️ Dual Audio Recording**: Chrome extension captures tab + microphone audio + upload file (alternating web app)
+- **🤖 AI Processing**: Whisper transcription + Gemini analysis summary
+- **📤 Slack Integration**: Instant summaries and daily progress reports
+- **📋 Notion Sync**: Automatic task creation and management
+- **🐙 GitHub Monitoring**: Auto-update tasks based on commits
+- **📊 Progress Tracking**: Daily standup automation
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Meeting       │    │   AI Processing │    │   Task          │
-│   Recording     │───▶│   (Whisper +    │───▶│   Management    │
-│                 │    │    Gemini)      │    │   (Notion)      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                                       │
-                       ┌─────────────────┐            │
-                       │   GitHub        │◀───────────┘
-                       │   Monitoring    │
-                       └─────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           INPUT SOURCES                                     │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Chrome Extension  |  Web App  |  Mic or File Upload              │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        AI PROCESSING ENGINE                                 │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Whisper API (Speech to Text)  →  Gemini AI (Analysis summary)    │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           SLACK INTEGRATION                                 │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Instant Summary Posting  |  Formatted Reports                     │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        TASK MANAGEMENT (NOTION)                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Task Creation  |  Smart Assignment  |  Status Tracking           │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        GITHUB MONITORING                                    │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Commit Tracking  →  Task Matching  →  Auto Status Updates        │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        PROGRESS AGGREGATION                                │
+│  ┌─────────────────────────────────────────────────────────────────────┐   │
+│  │   Daily Reports (GitHub + Notion)  →  Team Progress  →  Slack      │   │
+│  └─────────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📋 Prerequisites
+## 🛠️ Quick Start
 
-* Python 3.8+
-* Notion account with API access
-* GitHub account with Personal Access Token
-* Slack workspace with webhook access
-* Google Gemini API key (optional, for enhanced AI features)
+### 1. **Setup**
+```bash
+git clone <repo-url>
+pip install -r requirements.txt
+```
+### 2. Create a notion parent page that is connected to the notion token
 
----
-
-## 🛠️ Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <your-repo-url>
-   cd meeting
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**
-
-   ```bash
-   cd backend/dailysync
-   python setup_env.py
-   ```
-
-   This interactive script will prompt you for:
-
-   * Notion Integration Token
-   * Notion Parent Page ID
-   * GitHub Personal Access Token
-   * GitHub Repository details
-   * Slack Webhook URL
-   * Google Gemini API Key (optional)
-
-4. **Create Notion database** (if you don't have one)
-
-   ```bash
-   python create_notiondb.py
-   ```
-
----
-
-## 🔧 Configuration
-
-### Environment Variables
+### 3. **Configure**
+Create `.env` file with your API keys:
 
 ```env
-# Notion Configuration
 NOTION_TOKEN=your_notion_integration_token
 PARENT_PAGE_ID=your_notion_parent_page_id
-DATABASE_ID=your_notion_database_id
-
-# GitHub Configuration
 TOKEN_GITHUB=your_github_personal_access_token
 REPO_OWNER=your_github_username_or_org
 REPO_NAME=your_repository_name
-
-# Slack Configuration
 SLACK_WEBHOOK_URL=your_slack_webhook_url
-
-# AI Configuration
-GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_gemini_api_key (optional)
 ```
 
-### User Mapping
 
-Create a `user_mapping.json` file in the `backend/dailysync/` directory to map meeting participants to Notion users:
-
-```json
-{
-  "slack_user_id_1": {
-    "notion_name": "John Doe",
-    "slack_display_name": "john.doe"
-  },
-  "slack_user_id_2": {
-    "notion_name": "Jane Smith",
-    "slack_display_name": "jane.smith"
-  }
-}
-```
-
----
-
-## 🚀 Usage
-
-### 1. Process Meeting Recordings
-
+### 4. **Run**
 ```bash
-cd backend/dailysync
-python notion_integration.py
+python backend/dailysync/flask_app.py
 ```
 
-This will:
-
-* Process meeting transcripts
-* Extract action items using AI
-* Create tasks in Notion
-* Assign tasks to participants
-
-### 2. Monitor GitHub Activity
-
-```bash
-python github_integration.py
-```
-
-This will:
-
-* Monitor your GitHub repository for new commits
-* Automatically update task status when commit messages match task names
-* Send notifications to Slack
-
-### 3. Start the Web Server
-
-```bash
-python main.py
-```
-
-This starts the Flask web server for the web interface.
-
-### Chrome Extension
-
+### 5. **Install Extension**
 1. Go to `chrome://extensions/`
 2. Enable Developer Mode
-3. Click `Load unpacked`
-4. Select the `/extension` folder
-5. Click the extension icon → use Auralix.ai
-
----
-
-## 📁 Project Structure
-
-```
-meeting/
-├── backend/
-│   └── dailysync/
-│   |    ├── setup_env.py          # Environment setup script
-│   |    ├── create_notiondb.py    # Notion database creation
-│   |    ├── notion_integration.py # Notion task management
-│   |    ├── github_integration.py # GitHub monitoring
-│   |   └── user_mapping.json     # User mapping configuration
-|   └── whisper_api/           # FastAPI/Flask backend for audio transcription and summarization
-│       ├── app.py             # Main API routes (audio → text → summary)
-│       └── meeting_summary_input.json # handles Gemini prompt structuring & formatting
-├── extension/                 # Chrome extension files
-│   ├── background.js          # Background logic (API calls, message listeners)
-│   ├── icon.png               # Extension icon
-│   ├── manifest.json          # Chrome extension manifest (v3)
-│   ├── popup.html             # UI for popup window
-│   ├── popup.js               # JS logic for popup actions (record, upload, display)
-│   └── styles.css             # Popup styling
-│
-├── web_app/                   # (Optional) Minimal web interface or test frontend
-│   ├── app.js                 # Script for basic frontend interaction
-│   └── index.html             # Web frontend entry point
-├── requirements.txt              # Python dependencies
-└── README.md                     # This file
-```
-
+3. Load unpacked → Select `/extension` folder
+4. Allow microphone permissions
+or
+start the webapp/index.html in local browser
 ---
 
 ## 🔄 Workflow
 
-1. **Record the Meeting**: Start recording directly via the Chrome extension or upload an audio file.
-2. **Transcription**: System transcribes the meeting using Whisper
-3. **Summarize & Analyze**: Gemini AI extracts action items and assigns them to participants
-4. **Task Creation**: Tasks are automatically created in Notion with proper assignments
-5. **GitHub Monitoring**: Commits and pull requests are matched with Notion tasks to auto-update their status.
-6. **Slack Notifications**: Daily summaries and task updates are sent to the team via Slack, formatted clearly for quick visibility.
+1. **Record** → Chrome extension captures meeting audio
+2. **Process** → Whisper transcribes, Gemini analyzes
+3. **Share** → Summary posted to Slack
+4. **Create** → Tasks auto-created in Notion
+5. **Track** → GitHub commits update task status
+6. **Report** → Daily progress sent to Slack
 
 ---
 
-## 🤖 AI Features
+## 📁 Structure
 
-* **🎧Meeting Transcription**: High-accuracy speech-to-text conversion
-* **📝Task Extraction**: Intelligent identification of action items from conversation
-* **👥Smart Assignment**: Automatic assignment based on participant mentions
-* **📅Deadline Detection**: Extracts and sets appropriate due dates for tasks
+```
+meeting/
+├── backend/dailysync/     # Flask app, integrations
+├── extension/             # Chrome extension
+├── web_app/              # Web interface
+└── requirements.txt      # Dependencies
+```
 
 ---
 
 ## 🔗 Integrations
 
-### Notion
-
-* Creates and manages task databases
-* Updates task status automatically
-* Tracks assignees and due dates
-
-### GitHub
-
-* Monitors repository commits
-* Matches commit messages to task names
-* Updates task completion status
-
-### Slack
-
-* Sends task creation notifications
-* Updates team on task completion
-* Provides real-time status updates
+- **📝 Notion**: Task database with auto-assignment
+- **💬 Slack**: Instant summaries + daily reports
+- **🐙 GitHub**: Commit monitoring + auto-updates
+- **🤖 AI**: Whisper transcription + Gemini analysis
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛 Support
 
-### Common Issues
-
-1. **Notion API Errors**
-
-   * Verify your Notion integration token
-   * Ensure the integration has access to the parent page
-   * Check that the database ID is correct
-
-2. **GitHub API Rate Limits**
-
-   * Use a Personal Access Token with appropriate permissions
-   * Consider implementing rate limiting for high-activity repositories
-
-3. **AI Processing Issues**
-
-   * Ensure your Gemini API key is valid
-   * Check that audio files are in supported formats
-   * Verify internet connectivity for API calls
-
-### Debug Mode
-
-Enable debug logging by setting the `DEBUG` environment variable:
-
-```bash
-export DEBUG=1
-python github_integration.py
-```
+- **Issues**: Create GitHub issue
+- **Docs**: Check inline comments
+- **Debug**: Set `DEBUG=1` environment variable
 
 ---
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🆘 Support
-
-For support and questions:
-
-* Create an issue in the GitHub repository
-* Check the troubleshooting section above
-* Review the configuration examples
-
----
-
-**Built with ❤️ for efficient team collaboration and project management**
+**Built with ❤️ for efficient team collaboration**
