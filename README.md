@@ -1,16 +1,50 @@
-# Meeting Task Management System
+#Auralix.ai
 
-A comprehensive meeting task management system that integrates Notion, GitHub, and Slack to automatically track and manage action items from meetings. This system uses AI-powered transcription and summarization to extract tasks and automatically syncs them with your project management workflow.
+Where Meetings Turn into Momentum
+Auralix.ai is an AI Powered Automation that captures meetings, transcribes them in real-time, and turns every discussion into structured summaries and synced tasks — directly linked to Notion, Slack, and GitHub. From voice to visibility, it automates progress tracking without manual effort.
 
-## 🚀 Features
+---
 
-- **AI-Powered Meeting Transcription**: Uses OpenAI Whisper for accurate meeting transcription
-- **Intelligent Task Extraction**: Leverages Google Gemini AI to extract action items from meeting transcripts
-- **Notion Integration**: Automatically creates and manages tasks in Notion databases
-- **GitHub Sync**: Monitors commits and automatically updates task status based on commit messages
-- **Slack Notifications**: Sends notifications to Slack channels for task updates
-- **Smart User Mapping**: Intelligently maps meeting participants to Notion users
-- **Real-time Monitoring**: Continuously monitors GitHub activity for task completion
+## 🚀 Key Features
+
+### 🎙️ Chrome Extension — Meeting Recorder & Summary Hub
+
+* Record meetings in-browser
+* Upload audio files 
+* Get instant summaries using Whisper + Gemini
+* Display summary directly in popup UI
+* Push summaries to:
+
+  * ✅ Slack (structured message)
+  * ✅ Notion (task board with assignees)
+
+### 🧠 FastAPI Backend — AI Summarization Engine
+
+* Audio → Text via OpenAI Whisper
+* Text → Summary via Gemini
+* Custom structured prompt output:
+
+  1. Key summary
+  2. Main topics
+  3. Action items
+  4. Important details
+* Slack bot integration (formatted daily summary)
+* Notion SDK integration (task sync with metadata)
+
+### 🤖 Auto Progress Aggregator
+
+* Pull GitHub PRs, commits via GitHub API
+* Fetch Notion task updates by user
+* Match activity to Slack users
+* Generate team-wise daily task progress report
+* Post to Slack in clear format:
+
+  ```
+  👤 Shreya
+  ✅ Fixed UI/UX 
+  🚧 Building frontend
+  ⚠️ Blocked by Notion API
+  ```
 
 ## 🏗️ Architecture
 
@@ -141,6 +175,14 @@ python main.py
 ```
 
 This starts the Flask web server for the web interface.
+
+### Chrome Extension
+
+1. Go to `chrome://extensions/`
+2. Enable Developer Mode
+3. Click `Load unpacked`
+4. Select the `/extension` folder
+5. Click the extension icon → use Auralix.ai
 
 ## 📁 Project Structure
 
