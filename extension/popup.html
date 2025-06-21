@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auralix.ai</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="auralix-popup">
+    <header>
+      <img src="icon.png" alt="Auralix Logo" class="logo" />
+      <div class="header-text">
+        <h1>Auralix.ai</h1>
+        <p class="subtitle">AI Powered Automation</p>
+      </div>
+    </header>
+    
+    <main>
+      <div class="input-container">
+        <label for="meetingTitle" class="input-label">
+          <i class="fas fa-heading"></i>
+          Meeting Title
+        </label>
+        <input 
+          id="meetingTitle" 
+          type="text" 
+          placeholder="Enter meeting title..." 
+          aria-label="Meeting Title" 
+        />
+      </div>
+
+      <div class="actions">
+        <button id="recordBtn" aria-label="Start Recording" class="record">
+          <span class="dot"></span>
+          <span class="label">Start Recording</span>
+          <i class="fas fa-microphone"></i>
+        </button>
+        
+        <div class="divider">
+          <span class="or">or</span>
+        </div>
+        
+        <label for="uploadFile" class="upload-label">
+          <i class="fas fa-upload"></i>
+          Upload Audio File
+        </label>
+        <input id="uploadFile" type="file" accept="audio/*" class="sr-only" />
+      </div>
+
+      <div id="status" class="status">
+        <span class="status-icon">✨</span>
+        <span class="status-text">Ready to record your meetings!</span>
+      </div>
+
+      <!-- Flask Backend Features -->
+      <div class="backend-features">
+        <div class="backend-buttons">
+          <button id="initDb" class="backend-btn">
+            <i class="fas fa-database"></i>
+            Create Notion Database
+          </button>
+          <button id="checkCommits" class="backend-btn">
+            <i class="fab fa-github"></i>
+            Fetch GitHub Commits
+          </button>
+          <button id="sendStandup" class="backend-btn">
+            <i class="fab fa-slack"></i>
+            Send Task Progress Summary to Slack
+          </button>
+        </div>
+      </div>
+
+      <section id="summarySection" class="hidden">
+        <h2>
+          <i class="fas fa-brain"></i>
+          AI Summary
+        </h2>
+        <div class="summary-container">
+          <textarea 
+            id="summaryEdit" 
+            aria-label="Edit summary before posting"
+            placeholder="Your AI-generated summary will appear here..."
+          ></textarea>
+          <button id="postToSlack" class="primary">
+            <i class="fab fa-slack"></i>
+            Post to Slack
+          </button>
+        </div>
+      </section>
+    </main>
+    
+    <div id="toast" class="toast" aria-live="polite"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
