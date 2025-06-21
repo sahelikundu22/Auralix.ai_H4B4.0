@@ -2,7 +2,7 @@
 
 **Where Meetings Turn into Momentum**
 
-AI-powered meeting automation that captures, transcribes, and transforms discussions into actionable tasks across Notion, Slack, and GitHub.
+Auralix.ai is an AI-powered async agent that captures meetings, transcribes them in real-time, summarizes team discussions, and auto-syncs tasks to Notion, Slack, and GitHub. It also pulls team activity from GitHub and Notion, summarizes each member’s progress using Gemini, and sends clean Slack updates, automates everything — giving async visibility without the overhead of manual standups.
 
 ---
 
@@ -75,32 +75,35 @@ AI-powered meeting automation that captures, transcribes, and transforms discuss
 ### 1. **Setup**
 ```bash
 git clone <repo-url>
-cd meeting
 pip install -r requirements.txt
-cd backend/dailysync
-python setup_env.py
 ```
 
 ### 2. **Configure**
 Create `.env` file with your API keys:
-```env
-NOTION_TOKEN=your_token
-TOKEN_GITHUB=your_token
-SLACK_WEBHOOK_URL=your_webhook
-GEMINI_API_KEY=your_key
-```
 
-### 3. **Run**
+```env
+NOTION_TOKEN=your_notion_integration_token
+PARENT_PAGE_ID=your_notion_parent_page_id
+TOKEN_GITHUB=your_github_personal_access_token
+REPO_OWNER=your_github_username_or_org
+REPO_NAME=your_repository_name
+SLACK_WEBHOOK_URL=your_slack_webhook_url
+GEMINI_API_KEY=your_gemini_api_key (optional)
+
+3. create a notion parent page that is connected to the notion token
+
+### 4. **Run**
 ```bash
 python backend/dailysync/flask_app.py
 ```
 
-### 4. **Install Extension**
+### 5. **Install Extension**
 1. Go to `chrome://extensions/`
 2. Enable Developer Mode
 3. Load unpacked → Select `/extension` folder
 4. Allow microphone permissions
-
+or
+start the webapp/index.html in local browser
 ---
 
 ## 🔄 Workflow
