@@ -1,29 +1,29 @@
 {
-  "github_link": "https://github.com/sahelikundu22/for_testing",
-  "tasks": [
-    {
-      "task": "Create wireframes for the homepage (hero section, navigation bar, footer) using Figma",
-      "assignee": "Shia",
-      "status": "To Do",
-      "due": null
-    },
-    {
-      "task": "Set up the base project with React and Tailwind CSS, create folder structure, and push to GitHub",
-      "assignee": "Deepnanda",
-      "status": "To Do",
-      "due": null
-    },
-    {
-      "task": "Design the logo, select color palette, and choose font aligning with a clean, modern feel",
-      "assignee": "Shahalee",
-      "status": "To Do",
-      "due": null
-    },
-    {
-      "task": "Create homepage text (about section and features), aligning with finalized wireframes",
-      "assignee": "Meeting Leader",
-      "status": "To Do",
-      "due": null
+      "github_link": "https://github.com/sahelikundu22/for_testing",
+      "tasks": [
+        {
+          "task": "Create wireframes for the homepage (hero section, navigation bar, footer) using Figma",
+          "assignee": "Shia",
+          "status": "To Do",
+          "due": null
+        },
+        {
+          "task": "Set up the base project with React and Tailwind CSS, create folder structure, and push to GitHub",
+          "assignee": "Deepnanda",
+          "status": "To Do",
+          "due": null
+        },
+        {
+          "task": "Design the logo, select color palette, and choose font aligning with a clean, modern feel",
+          "assignee": "Shahalee",
+          "status": "To Do",
+          "due": null
+        },
+        {
+          "task": "Create homepage text (about section and features), aligning with finalized wireframes",
+          "assignee": "Meeting Leader",
+          "status": "To Do",
+          "due": null
+        }
+      ]
     }
-  ]
-}
