@@ -77,8 +77,9 @@ Auralix.ai is an AI-powered async agent that captures meetings, transcribes them
 git clone <repo-url>
 pip install -r requirements.txt
 ```
+### 2. Create a notion parent page that is connected to the notion token
 
-### 2. **Configure**
+### 3. **Configure**
 Create `.env` file with your API keys:
 
 ```env
@@ -89,8 +90,8 @@ REPO_OWNER=your_github_username_or_org
 REPO_NAME=your_repository_name
 SLACK_WEBHOOK_URL=your_slack_webhook_url
 GEMINI_API_KEY=your_gemini_api_key (optional)
+```
 
-3. create a notion parent page that is connected to the notion token
 
 ### 4. **Run**
 ```bash
