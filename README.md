@@ -1,7 +1,7 @@
 # Auralix.ai
 
 **Where Meetings Turn into Momentum**
-Record, Summarize, and Sync with Slack, Notion & GitHub in One Click. Transform your meetings into actionable insights with AI-powered automation.
+---
 
 Auralix.ai is an AI-powered automation platform that captures meetings, transcribes them in real-time, and turns every discussion into structured summaries and synced tasks — directly linked to Notion, Slack, and GitHub. From voice to visibility, it automates progress tracking without manual effort.
 
