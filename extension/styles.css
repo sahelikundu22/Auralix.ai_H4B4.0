@@ -6,7 +6,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #061450 0%, #a986cc 100%);
   margin: 0;
   font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
   color: #2d3748;
@@ -53,20 +53,23 @@ body {
 header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 2px solid rgba(102, 126, 234, 0.1);
   position: relative;
+  text-align: center;
 }
 
 .logo {
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 16px rgba(59, 72, 127, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   animation: logoFloat 3s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes logoFloat {
@@ -76,24 +79,28 @@ header {
 
 .logo:hover {
   transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 12px 24px rgba(38, 56, 135, 0.4);
 }
 
 .header-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  align-items: center;
+  text-align: center;
 }
 
 header h1 {
   font-size: 28px;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #0e1e68, #9473b4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.5px;
   margin: 0;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .subtitle {
@@ -103,6 +110,8 @@ header h1 {
   margin: 0;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* Main Content */

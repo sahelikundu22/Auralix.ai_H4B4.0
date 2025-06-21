@@ -251,6 +251,8 @@ if (recordBtn) {
 
 async function startRecording() {
   try {
+    console.log("Starting recording process...");
+    
     // Add button press animation
     recordBtn.style.transform = 'scale(0.95)';
     setTimeout(() => {
@@ -258,17 +260,37 @@ async function startRecording() {
     }, 150);
     
     // 1. Capture tab audio
+    console.log("Attempting to capture tab audio...");
     tabStream = await new Promise((resolve, reject) => {
       chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
-        if (stream) resolve(stream);
-        else reject(new Error('Failed to capture tab audio'));
+        if (chrome.runtime.lastError) {
+          console.error("Tab capture error:", chrome.runtime.lastError);
+          reject(new Error(`Tab capture failed: ${chrome.runtime.lastError.message}`));
+          return;
+        }
+        if (stream) {
+          console.log("Tab audio captured successfully");
+          resolve(stream);
+        } else {
+          console.error("No stream returned from tab capture");
+          reject(new Error('Failed to capture tab audio - no stream returned'));
+        }
       });
     });
     
     // 2. Capture mic audio
-    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    console.log("Attempting to capture microphone audio...");
+    micStream = await navigator.mediaDevices.getUserMedia({ 
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      } 
+    });
+    console.log("Microphone audio captured successfully");
     
     // 3. Mix both streams using Web Audio API
+    console.log("Setting up audio mixing...");
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const destination = audioContext.createMediaStreamDestination();
     const tabSource = audioContext.createMediaStreamSource(tabStream);
@@ -281,31 +303,46 @@ async function startRecording() {
     // Connect mic audio only to the recording destination
     micSource.connect(destination);
     mixedStream = destination.stream;
+    console.log("Audio mixing setup complete");
     
     // 4. Set up MediaRecorder
-    mediaRecorder = new MediaRecorder(mixedStream);
+    console.log("Setting up MediaRecorder...");
+    mediaRecorder = new MediaRecorder(mixedStream, {
+      mimeType: 'audio/webm;codecs=opus'
+    });
     audioChunks = [];
     
     mediaRecorder.ondataavailable = event => {
+      console.log("Data available:", event.data.size, "bytes");
       audioChunks.push(event.data);
     };
     
     mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      console.log("Recording stopped, processing audio...");
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
       uploadAudio(audioBlob);
       cleanupStreams();
     };
     
-    mediaRecorder.start();
+    mediaRecorder.onerror = (event) => {
+      console.error("MediaRecorder error:", event);
+      showStatus("Recording error occurred.", "error");
+      showToast("Recording error occurred.", "error");
+      cleanupStreams();
+    };
+    
+    mediaRecorder.start(1000); // Collect data every second
     setRecordingUI(true);
     hideSummarySection();
     
     // Add success animation
     showToast("Recording started! 🎙️", "success");
+    console.log("Recording started successfully");
     
   } catch (error) {
-    showStatus("Audio access error.", "error");
-    showToast("Audio access error.", "error");
+    console.error("Recording error:", error);
+    showStatus(`Audio access error: ${error.message}`, "error");
+    showToast(`Audio access error: ${error.message}`, "error");
     cleanupStreams();
   }
 }

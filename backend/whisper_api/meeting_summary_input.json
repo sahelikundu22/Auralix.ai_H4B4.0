@@ -2,25 +2,25 @@
   "github_link": "https://github.com/sahelikundu22/for_testing",
   "tasks": [
     {
-      "task": "Create wireframes for the homepage (hero section, navigation bar, footer) in Figma",
+      "task": "Create wireframes for homepage (hero section, navigation bar, footer)",
       "assignee": "Shia",
       "status": "To Do",
       "due": null
     },
     {
-      "task": "Set up the base project with React and Tailwind CSS, create folder structure, and push to GitHub",
+      "task": "Set up base project with React and Tailwind CSS (folder structure, GitHub push)",
       "assignee": "Deepnanda",
       "status": "To Do",
       "due": null
     },
     {
-      "task": "Design logo, select color palette, and choose font for a clean, modern feel",
+      "task": "Design logo, select color palette, and choose font (clean, modern feel)",
       "assignee": "Shahalee",
       "status": "To Do",
       "due": null
     },
     {
-      "task": "Create homepage text for the about section and features, aligning with wireframes",
+      "task": "Create homepage text (about section and features), aligning with wireframes",
       "assignee": "Meeting Leader",
       "status": "To Do",
       "due": null
