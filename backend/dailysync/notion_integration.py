@@ -6,6 +6,25 @@ from dotenv import load_dotenv
 import subprocess, sys
 
 load_dotenv()
+from rapidfuzz import fuzz, process
+
+# Extract all known Notion names from mapping
+user_mapping_path = os.path.join(os.path.dirname(__file__), 'user_mapping.json')
+with open(user_mapping_path) as f:
+    USER_MAPPING = json.load(f)
+
+# Map both Notion names and Slack display names
+KNOWN_NAMES = {}
+for user in USER_MAPPING.values():
+    KNOWN_NAMES[user['notion_name'].lower()] = user['notion_name']
+    KNOWN_NAMES[user['slack_display_name'].lower()] = user['notion_name']
+
+def normalize_assignee(name):
+    if not name:
+        return "Unassigned"
+    
+    match, score, _ = process.extractOne(name.lower(), KNOWN_NAMES.keys(), scorer=fuzz.ratio)
+    return KNOWN_NAMES[match] if score >= 70 else "Unassigned"
 
 def process_meeting_summary(summary_data, meeting_title):
     """
@@ -23,9 +42,7 @@ def process_meeting_summary(summary_data, meeting_title):
         # Get or create the database ID
         database_id = os.getenv("DATABASE_ID")
         if not database_id:
-            database_id = create_meeting_task_database()
-            if not database_id:
-                raise Exception("Failed to create or get Notion database")
+            raise Exception("DATABASE_ID not found. Please initialize the database first using the 'Initialize Database' button.")
         
         # Create the task data structure
         task_data = {
@@ -38,7 +55,8 @@ def process_meeting_summary(summary_data, meeting_title):
             github_link = os.getenv("GITHUB_REPO_URL") or None
             task = {
                 "task": item["task"],
-                "assignee": item["assignee"] if item["assignee"] else "Unassigned",
+                "assignee": normalize_assignee(item["assignee"]),
+                #"assignee": item["assignee"] if item["assignee"] else "Unassigned",
                 "status": "To Do",
                 "due": item["due"] if item["due"] else (datetime.now().strftime("%Y-%m-%d")),
                 "github_link": github_link
