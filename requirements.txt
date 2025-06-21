@@ -1,20 +1,20 @@
-# Flask and web server components
-Flask==3.0.0
-Flask-Login==0.6.3
-Flask-SQLAlchemy==3.1.1
-Werkzeug==3.0.1
-
-# APIs and Integrations
-python-dotenv==1.0.0
+# Base requirements
+Flask>=2.0
+python-dotenv==1.0.1
 requests==2.31.0
-pyngrok
-google-generativeai==0.3.2
-slack-sdk==3.26.1
+notion-client==2.0.0
 
-# Audio Processing and AI
-pydub==0.25.1
-SpeechRecognition==3.10.0
-# Using the PyPI package for whisper for better dependency management
-openai-whisper==20231117
-torch==2.5.1
-torchaudio==2.5.1 
+# Scheduler
+Flask-APScheduler>=1.12.0
+
+# AI and Transcription
+google-generativeai
+openai-whisper
+
+# Slack Integration
+slack_sdk
+
+# Web Server
+Flask-Cors
+gunicorn 
+rapidfuzz
