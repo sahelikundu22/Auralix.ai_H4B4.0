@@ -11,41 +11,40 @@ Auralix.ai is an AI-powered automation platform that captures meetings, transcri
 
 ### 🎙️ Chrome Extension — Meeting Recorder & Summary Hub
 
-* Record meetings in-browser
-* Upload audio files
-* Get instant summaries using Whisper + Gemini
-* Display summary directly in popup UI
-* Push summaries to:
-
+* Record meetings directly from the browser
+* Upload audio files for processing
+* Get instant summaries powered by Whisper + Gemini
+* Display summaries in an interactive popup UI
+* One-click push to:
   * ✅ Slack (structured message)
-  * ✅ Notion (task board with assignees)
+  * ✅ Notion (task board with auto-assignees)
 
 ### 🧠 FastAPI Backend — AI Summarization Engine
 
 * Audio → Text via OpenAI Whisper
-* Text → Summary via Gemini
-* Custom structured prompt output:
+* Text → Summary via Gemini with custom prompt templates
 
   1. Key summary
-  2. Main topics
+  2. Main discussion topics
   3. Action items
   4. Important details
 * Slack bot integration (formatted daily summary)
-* Notion SDK integration (task sync with metadata)
+* Notion SDK: Syncs tasks with metadata (assignees, status, deadlines)
+
 
 ### 🤖 Auto Progress Aggregator
 
-* Pull GitHub PRs, commits via GitHub API
+* Fetch pull requests & commits via GitHub API
 * Fetch Notion task updates by user
 * Match activity to Slack users
-* Generate team-wise daily task progress report
+* Generate clear,team-wise daily task progress report
 * Post to Slack in clear format:
 
   ```
   👤 Shreya
-  ✅ Fixed UI/UX 
-  🚧 Building frontend
-  ⚠️ Blocked by Notion API
+  ✅ What I did: Fixed UI/UX 
+  🚧 In progress: Building frontend
+  ⚠️ Blockers: None
   ```
 
 ---
@@ -209,11 +208,25 @@ This starts the Flask web server for the web interface.
 meeting/
 ├── backend/
 │   └── dailysync/
-│       ├── setup_env.py          # Environment setup script
-│       ├── create_notiondb.py    # Notion database creation
-│       ├── notion_integration.py # Notion task management
-│       ├── github_integration.py # GitHub monitoring
-│       └── user_mapping.json     # User mapping configuration
+│   |    ├── setup_env.py          # Environment setup script
+│   |    ├── create_notiondb.py    # Notion database creation
+│   |    ├── notion_integration.py # Notion task management
+│   |    ├── github_integration.py # GitHub monitoring
+│   |   └── user_mapping.json     # User mapping configuration
+|   └── whisper_api/           # FastAPI/Flask backend for audio transcription and summarization
+│       ├── app.py             # Main API routes (audio → text → summary)
+│       └── meeting_summary_input.json # handles Gemini prompt structuring & formatting
+├── extension/                 # Chrome extension files
+│   ├── background.js          # Background logic (API calls, message listeners)
+│   ├── icon.png               # Extension icon
+│   ├── manifest.json          # Chrome extension manifest (v3)
+│   ├── popup.html             # UI for popup window
+│   ├── popup.js               # JS logic for popup actions (record, upload, display)
+│   └── styles.css             # Popup styling
+│
+├── web_app/                   # (Optional) Minimal web interface or test frontend
+│   ├── app.js                 # Script for basic frontend interaction
+│   └── index.html             # Web frontend entry point
 ├── requirements.txt              # Python dependencies
 └── README.md                     # This file
 ```
@@ -222,21 +235,21 @@ meeting/
 
 ## 🔄 Workflow
 
-1. **Meeting Recording**: Record your meeting (audio/video)
+1. **Record the Meeting**: Start recording directly via the Chrome extension or upload an audio file.
 2. **Transcription**: System transcribes the meeting using Whisper
-3. **AI Analysis**: Gemini AI extracts action items and assigns them to participants
+3. **Summarize & Analyze**: Gemini AI extracts action items and assigns them to participants
 4. **Task Creation**: Tasks are automatically created in Notion with proper assignments
-5. **GitHub Monitoring**: System monitors commits and updates task status
-6. **Slack Notifications**: Team members receive updates via Slack
+5. **GitHub Monitoring**: Commits and pull requests are matched with Notion tasks to auto-update their status.
+6. **Slack Notifications**: Daily summaries and task updates are sent to the team via Slack, formatted clearly for quick visibility.
 
 ---
 
 ## 🤖 AI Features
 
-* **Meeting Transcription**: High-accuracy speech-to-text conversion
-* **Task Extraction**: Intelligent identification of action items from conversation
-* **Smart Assignment**: Automatic assignment based on participant mentions
-* **Due Date Detection**: Extracts and sets appropriate due dates for tasks
+* **🎧Meeting Transcription**: High-accuracy speech-to-text conversion
+* **📝Task Extraction**: Intelligent identification of action items from conversation
+* **👥Smart Assignment**: Automatic assignment based on participant mentions
+* **📅Deadline Detection**: Extracts and sets appropriate due dates for tasks
 
 ---
 
