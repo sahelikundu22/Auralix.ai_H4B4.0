@@ -1,29 +1,29 @@
 {
-      "github_link": "https://github.com/sahelikundu22/for_testing",
-      "tasks": [
-        {
-          "task": "Create wireframes for the homepage (hero section, navigation bar, footer) using Figma",
-          "assignee": "Shia",
-          "status": "To Do",
-          "due": null
-        },
-        {
-          "task": "Set up the base project with React and Tailwind CSS, create folder structure, and push to GitHub",
-          "assignee": "Deepnanda",
-          "status": "To Do",
-          "due": null
-        },
-        {
-          "task": "Design the logo, select color palette, and choose font aligning with a clean, modern feel",
-          "assignee": "Shahalee",
-          "status": "To Do",
-          "due": null
-        },
-        {
-          "task": "Create homepage text (about section and features), aligning with finalized wireframes",
-          "assignee": "Meeting Leader",
-          "status": "To Do",
-          "due": null
-        }
-      ]
+  "github_link": "https://github.com/sahelikundu22/for_testing",
+  "tasks": [
+    {
+      "task": "Create wireframes and overall layout",
+      "assignee": "Shreya",
+      "status": "To Do",
+      "due": "2025-06-29"
+    },
+    {
+      "task": "Set up React project and folder structure",
+      "assignee": "Devnanda",
+      "status": "To Do",
+      "due": "2025-06-29"
+    },
+    {
+      "task": "Design logo, color palette, and basic icon set",
+      "assignee": "Saheli",
+      "status": "To Do",
+      "due": "2025-06-29"
+    },
+    {
+      "task": "Draft content for each section (hero text, about info, feature descriptions)",
+      "assignee": "Speaker (presumably the meeting leader)",
+      "status": "To Do",
+      "due": "2025-06-29"
     }
+  ]
+}

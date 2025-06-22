@@ -8,7 +8,7 @@ notion-client==2.0.0
 Flask-APScheduler>=1.12.0
 
 # AI and Transcription
-google-generativeai
+google-generativeai>=0.3.0
 openai-whisper
 
 # Slack Integration

@@ -6,7 +6,6 @@ import os
 import json
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-import google.generativeai as genai
 import whisper
 import logging
 import uuid
@@ -16,6 +15,14 @@ from slack_sdk.errors import SlackApiError
 import tempfile
 import shutil
 import subprocess
+
+# Import Google Generative AI with error handling
+try:
+    import google.generativeai as genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+    genai = None
 
 # --- Basic Setup ---
 load_dotenv()
@@ -69,9 +76,20 @@ SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
-    gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+# Initialize Gemini with proper error handling
+gemini_model = None
+if GEMINI_API_KEY and GEMINI_AVAILABLE:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+        logger.info("✅ Gemini model initialized successfully")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize Gemini model: {e}")
+        gemini_model = None
+elif not GEMINI_AVAILABLE:
+    logger.warning("⚠️ google-generativeai package not available - AI features will be disabled")
+elif not GEMINI_API_KEY:
+    logger.warning("⚠️ GEMINI_API_KEY not found - AI features will be disabled")
 
 whisper_model = whisper.load_model("base")
 slack_client = WebClient(token=SLACK_BOT_TOKEN) if SLACK_BOT_TOKEN else None
@@ -280,15 +298,23 @@ def generate_meeting_summary(text):
                 "structured_data_json": None
             }
 
+        # Calculate due date (7 days from now)
+        due_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+
         json_prompt = f"""
 Analyze this meeting transcript and provide a structured summary in JSON format.
 Transcript: {text}
-Required format: {{"summary": "...", "topics": [], "action_items": [{{"task": "...", "assignee": "...", "due": "YYYY-MM-DD"}}]}}
-Rules: Extract action items, assignees, and due dates. Output ONLY valid JSON.
+Required format: {{"summary": "...", "topics": [], "action_items": [{{"task": "...", "assignee": "..."}}]}}
+
+Rules: Extract action items and assignees. Do NOT include due dates in the JSON - they will be added automatically. Output ONLY valid JSON.
 """
         json_response = gemini_model.generate_content(json_prompt)
         structured_data_clean = re.sub(r"```(?:json)?", "", json_response.text, flags=re.IGNORECASE).strip()
         structured_data_json = json.loads(structured_data_clean)
+
+        # Add due date to all action items
+        for item in structured_data_json.get("action_items", []):
+            item["due"] = due_date
 
         text_prompt = f"""
 Analyze this meeting transcript and provide a detailed summary formatted with markdown.
@@ -324,6 +350,9 @@ def send_summary_to_slack(data):
 def update_meeting_summary_json(summary_data, meeting_title):
     """Update the meeting_summary_input.json file with new meeting data"""
     try:
+        # Calculate due date (7 days from now)
+        due_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+        
         # Create the task data structure
         task_data = {
             "github_link": os.getenv("GITHUB_REPO_URL", "https://github.com/sahelikundu22/for_testing"),
@@ -336,7 +365,7 @@ def update_meeting_summary_json(summary_data, meeting_title):
                 "task": item["task"],
                 "assignee": item["assignee"] if item["assignee"] else "Unassigned",
                 "status": "To Do",
-                "due": item["due"] if item["due"] else None
+                "due": due_date  # Use calculated due date instead of item["due"]
             }
             task_data["tasks"].append(task)
         
@@ -362,22 +391,36 @@ def add_tasks_to_existing_database(summary_json):
             logger.info("ℹ️ No existing database found. Tasks will be added when you initialize the database.")
             return
         
+        # Calculate due date (7 days from now)
+        due_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+        
         # Add tasks to existing database
         if "action_items" in summary_json and summary_json["action_items"]:
             logger.info(f"📝 Adding {len(summary_json['action_items'])} tasks to existing Notion database...")
+            success_count = 0
             for item in summary_json["action_items"]:
-                add_task_to_database(db_id, {
-                    "task": item.get("task", "Untitled Task"),
-                    "assignee": item.get("assignee", "Unassigned"),
-                    "status": "To Do",
-                    "due": item.get("due"),
-                })
-            logger.info("✅ All tasks added to existing Notion database")
+                try:
+                    add_task_to_database(db_id, {
+                        "task": item.get("task", "Untitled Task"),
+                        "assignee": item.get("assignee", "Unassigned"),
+                        "status": "To Do",
+                        "due": due_date,  # Use calculated due date instead of item.get("due")
+                    })
+                    success_count += 1
+                except Exception as task_error:
+                    logger.error(f"❌ Failed to add task '{item.get('task', 'Untitled Task')}': {task_error}")
+                    continue
+            
+            if success_count > 0:
+                logger.info(f"✅ Successfully added {success_count}/{len(summary_json['action_items'])} tasks to Notion database")
+            else:
+                logger.error("❌ Failed to add any tasks to Notion database. Please check your database ID and permissions.")
         else:
             logger.info("No action items to add to Notion")
             
     except Exception as e:
         logger.error(f"Error adding tasks to existing database: {str(e)}")
+        logger.info("💡 Tip: Run /init-db endpoint to create a new database or check your DATABASE_ID in .env file")
         raise e
 
 
@@ -428,14 +471,22 @@ def add_task_to_database(database_id, task):
 def get_all_tasks():
     database_id = os.getenv("DATABASE_ID")
     if not database_id:
-        logger.error("❌ DATABASE_ID not found")
+        logger.error("❌ DATABASE_ID not found in environment variables")
         return []
-    url = f"https://api.notion.com/v1/databases/{database_id}/query"
-    response = requests.post(url, headers=NOTION_HEADERS)
-    if response.status_code == 200:
-        return response.json()["results"]
-    else:
-        logger.error("❌ Failed to retrieve tasks: %s", response.json())
+    
+    try:
+        url = f"https://api.notion.com/v1/databases/{database_id}/query"
+        response = requests.post(url, headers=NOTION_HEADERS)
+        if response.status_code == 200:
+            return response.json()["results"]
+        elif response.status_code == 404:
+            logger.error(f"❌ Database with ID {database_id} not found. Please check your DATABASE_ID or run /init-db to create a new database.")
+            return []
+        else:
+            logger.error(f"❌ Failed to retrieve tasks: {response.json()}")
+            return []
+    except Exception as e:
+        logger.error(f"❌ Error accessing Notion database: {e}")
         return []
 
 
