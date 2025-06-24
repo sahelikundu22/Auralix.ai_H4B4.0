@@ -105,8 +105,9 @@ python backend/dailysync/flask_app.py
 2. Enable Developer Mode
 3. Load unpacked → Select `/extension` folder
 4. Allow microphone permissions
-or
-start the webapp/index.html in local browser
+
+### or 5. **Use our alternative webapp**
+- start the webapp/index.html in local browser
 ---
 
 ## 🔄 Workflow
