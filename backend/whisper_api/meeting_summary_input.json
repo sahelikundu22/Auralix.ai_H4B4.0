@@ -2,7 +2,7 @@
   "github_link": "https://github.com/sahelikundu22/for_testing",
   "tasks": [
     {
-      "task": "Create wireframes and overall layout",
+      "task": "Create wireframes and layout",
       "assignee": "Shreya",
       "status": "To Do",
       "due": "2025-06-29"
@@ -14,14 +14,14 @@
       "due": "2025-06-29"
     },
     {
-      "task": "Design logo, color palette, and basic icon set",
+      "task": "Design logo, color palette, and icon set",
       "assignee": "Saheli",
       "status": "To Do",
       "due": "2025-06-29"
     },
     {
-      "task": "Draft content for each section (hero text, about info, feature descriptions)",
-      "assignee": "Speaker (presumably the meeting leader)",
+      "task": "Draft content for all sections (hero text, about info, feature descriptions)",
+      "assignee": "Meeting Leader and Shri",
       "status": "To Do",
       "due": "2025-06-29"
     }

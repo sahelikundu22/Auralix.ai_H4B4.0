@@ -1,5 +1,6 @@
 # Base requirements
 Flask>=2.0
+Flask-Cors
 python-dotenv==1.0.1
 requests==2.31.0
 notion-client==2.0.0
@@ -15,6 +16,5 @@ openai-whisper
 slack_sdk
 
 # Web Server
-Flask-Cors
-gunicorn 
+gunicorn
 rapidfuzz
